@@ -21,10 +21,10 @@ public class Ball {
     }
 
     public void update() {
-        // x += xSpeed;
-        // y += ySpeed;
-        x = Gdx.input.getX();
-        y = Gdx.graphics.getHeight() - Gdx.input.getY();
+        x += xSpeed;
+        y += ySpeed;
+        // x = Gdx.input.getX();
+        // y = Gdx.graphics.getHeight() - Gdx.input.getY();
         if (x < radius || x > Gdx.graphics.getWidth() - radius) {
             xSpeed = -xSpeed;
         }
