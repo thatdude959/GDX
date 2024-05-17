@@ -3,52 +3,48 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Vector2;
 
 public class Ball {
-    int x;
-    int y;
-    int radius;
-    int xSpeed;
-    int ySpeed;
+    Circle circle;
+    Vector2 speed;
     Color color = Color.WHITE;
 
     public Ball(int x, int y, int radius, int xSpeed, int ySpeed) {
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
-        this.xSpeed = xSpeed;
-        this.ySpeed = ySpeed;
+        circle = new Circle(x,y,radius);
+        speed = new Vector2(xSpeed,ySpeed);
     }
 
     public void update() {
-        x += xSpeed;
-        y += ySpeed;
+        circle.x += speed.x;
+        circle.y += speed.y;
         // x = Gdx.input.getX();
         // y = Gdx.graphics.getHeight() - Gdx.input.getY();
-        if (x < radius || x > Gdx.graphics.getWidth() - radius) {
-            xSpeed = -xSpeed;
+        if (circle.x < circle.radius || circle.x > Gdx.graphics.getWidth() - circle.radius) {
+            speed.x = -speed.x;
         }
-        if (y < radius || y > Gdx.graphics.getHeight() - radius) {
-            ySpeed = -ySpeed;
+        if (circle.y < circle.radius || circle.y > Gdx.graphics.getHeight() - circle.radius) {
+            speed.y = -speed.y;
         }
     }
 
     public void draw(ShapeRenderer shape) {
         shape.setColor(color);
-        shape.circle(x, y, radius);
+        shape.circle(circle.x, circle.y, circle.radius);
     }
 
     public void checkCollision(Paddle paddle) {
         if (collidesWith(paddle)) {
-            ySpeed *= -1;
+            speed.y *= -1;
         }
     }
 
     private boolean collidesWith(Paddle paddle) {
-        if ((x - radius) >= paddle.x && (x - radius) <= paddle.x + paddle.width
-                || (x + radius) >= paddle.x && (x + radius) <= paddle.x + paddle.width) {
-            if (paddle.y <= (y + radius) && paddle.y >= (y - radius)
-                    || paddle.y + paddle.height <= (y + radius) && paddle.y + paddle.height >= (y - radius)) {
+        if ((circle.x - circle.radius) >= paddle.x && (circle.x - circle.radius) <= paddle.x + paddle.width
+                || (circle.x + circle.radius) >= paddle.x && (circle.x + circle.radius) <= paddle.x + paddle.width) {
+            if (paddle.y <= (circle.y + circle.radius) && paddle.y >= (circle.y - circle.radius)
+                    || paddle.y + paddle.height <= (circle.y + circle.radius) && paddle.y + paddle.height >= (circle.y - circle.radius)) {
                 return true;
             } else
                 return false;
